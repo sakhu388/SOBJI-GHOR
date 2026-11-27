@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#237a45">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>সবজি ঘর</title>
+<style>
+:root{--g:#237a45;--bg:#f6faf6;--card:#fff;--tx:#1e2a22;--mu:#66736a;--ln:#e1e9e2;--lt:#e4f3e8;--red:#c0392b;
+padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,"Noto Sans Bengali","Hind Siliguri",Arial,sans-serif;font-size:16px;line-height:1.55}
+header{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--ln);display:flex;align-items:center;gap:8px;padding:12px 16px}
+header b{font-size:19px;font-weight:800;flex:1}
+.ic{background:none;border:0;font-size:22px;cursor:pointer;position:relative;padding:4px 8px}
+.badge{position:absolute;top:-2px;right:0;background:var(--red);color:#fff;border-radius:10px;font-size:11px;padding:0 6px}
+main{max-width:640px;margin:auto;padding:14px 16px 140px}
+.hero{background:var(--lt);border-radius:20px;padding:18px}
+.hero h2{margin:0 0 6px;color:var(--g);font-size:21px}
+.hero p{margin:2px 0;font-size:14px}
+h3{font-size:20px;margin:18px 0 10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.vc{background:var(--card);border:1px solid var(--ln);border-radius:16px;padding:12px;display:flex;flex-direction:column}
+.vc .em{text-align:center;font-size:42px;line-height:1.3}
+.vc b{font-size:17px}.vc small{color:var(--mu)}
+.q{display:flex;align-items:center;gap:6px;margin-top:10px}
+.q span{flex:1;text-align:center;font-weight:700}
+.rb{width:36px;height:36px;border-radius:50%;border:0;font-size:20px;cursor:pointer;background:var(--lt);color:var(--g);font-weight:700}
+.rb.p{background:var(--g);color:#fff}
+.rb:disabled{opacity:.35}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:14px;padding:12px 14px;margin:10px 0}
+.li{display:flex;align-items:center;gap:10px}.li .em{font-size:28px}.li div{flex:1}.li small{color:var(--mu);display:block}
+.ln{display:flex;justify-content:space-between;padding:5px 0}.ln.t{font-weight:800;font-size:19px}
+.btn{display:block;width:100%;padding:14px;border:0;border-radius:12px;background:var(--g);color:#fff;font:inherit;font-weight:700;cursor:pointer;margin-top:12px;text-align:center;text-decoration:none}
+.btn.o{background:#fff;color:var(--g);border:2px solid var(--g)}
+.btn.w{background:#128c4a}
+.btn:disabled{opacity:.5}
+label{display:block;font-weight:700;margin-top:14px;font-size:14px}
+input,textarea,select{width:100%;padding:12px;margin-top:4px;border:1px solid #ccd8ce;border-radius:10px;font:inherit;background:#fff;color:var(--tx)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.chip{border:1px solid #ccd8ce;background:#fff;border-radius:20px;padding:7px 13px;font:inherit;font-size:14px;cursor:pointer}
+.chip.on{background:var(--g);color:#fff;border-color:var(--g)}
+.chip.cur{outline:3px solid #f6c744}
+.note{font-size:12.5px;color:var(--mu);margin:8px 0}
+.info{background:#fff;border:1px solid var(--ln);border-radius:12px;padding:12px;font-size:14px;margin:10px 0}
+.empty{text-align:center;color:var(--mu);padding:34px 10px}
+.pill{background:var(--lt);color:var(--g);border-radius:20px;padding:3px 10px;font-size:12px;white-space:nowrap}
+details.card summary{cursor:pointer;display:flex;justify-content:space-between;gap:8px;font-weight:700}
+.fab{position:fixed;right:16px;bottom:calc(76px + env(safe-area-inset-bottom,0px));background:var(--g);color:#fff;border:0;border-radius:28px;padding:14px 20px;font:inherit;font-weight:700;box-shadow:0 4px 14px #0003;cursor:pointer;z-index:6}
+nav{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--ln);display:flex;padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px));z-index:6}
+nav button{flex:1;background:none;border:0;font:inherit;font-size:12px;color:var(--mu);cursor:pointer;padding:4px}
+nav button span{display:block;font-size:22px}
+nav button.on{color:var(--g);font-weight:700}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(90px + env(safe-area-inset-bottom,0px));background:#222;color:#fff;padding:11px 18px;border-radius:10px;z-index:20;max-width:90%;display:none;font-size:14px;text-align:center}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #f6c744;outline-offset:2px}
+</style>
+</head>
+<body>
+<header id="hd"></header>
+<main id="app"></main>
+<div id="bar"></div>
+<div id="toast" role="status"></div>
+<script>
+var SB_URL="https://kvgzvnzsztufiodkmhaf.supabase.co",SB_KEY="sb_publishable_NY8K0Fh_LczN73d9KDZjpw_tFz6JEqM",WA="8801779989757",FEE=20;
+var DAYS=["শনিবার","রবিবার","সোমবার","মঙ্গলবার","বুধবার","বৃহস্পতিবার","শুক্রবার"];
+var VEG=[["আলু","কেজি",35,"🥔"],["পেঁয়াজ","কেজি",60,"🧅"],["টমেটো","কেজি",50,"🍅"],["বেগুন","কেজি",45,"🍆"],["শসা","কেজি",40,"🥒"],["গাজর","কেজি",55,"🥕"],["ফুলকপি","পিস",45,"🥦"],["লাউ","পিস",55,"🥬"],["ঢেঁড়স","কেজি",50,"🌿"],["করলা","কেজি",60,"🥒"],["পটল","কেজি",50,"🥒"],["ধনেপাতা","আঁটি",15,"🌱"]];
+var PAYS=["ডেলিভারির সময় নগদ","bKash","Nagad","Rocket"];
+function ld(k,d){try{var v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}}
+function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+var S={view:"home",cart:{},user:ld("sg_user",null),orders:ld("sg_orders",[]),after:null,addr:"",pay:PAYS[0],days:[],plan:{},cur:0,busy:false,install:null};
+function $(i){return document.getElementById(i)}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function en(s){return String(s).replace(/[০-৯]/g,function(d){return"০১২৩৪৫৬৭৮৯".indexOf(d)})}
+function toast(t){var e=$("toast");e.textContent=t;e.style.display="block";clearTimeout(toast.t);toast.t=setTimeout(function(){e.style.display="none"},3500)}
+function vg(n){return VEG.filter(function(v){return v[0]===n})[0]}
+function sub(){return VEG.reduce(function(s,v){return s+v[2]*(S.cart[v[0]]||0)},0)}
+function qty(){var n=0;for(var k in S.cart)n+=S.cart[k];return n}
+function dsub(d){var p=S.plan[d]||{};return VEG.reduce(function(s,v){return s+v[2]*(p[v[0]]||0)},0)}
+function wveg(){return S.days.reduce(function(s,d){return s+dsub(d)},0)}
+function line(l,a,t){return'<div class="ln'+(t?" t":"")+'"><span>'+l+'</span><span>৳'+a+'</span></div>'}
+function payOpts(){return PAYS.map(function(p){return"<option"+(p===S.pay?" selected":"")+">"+p+"</option>"}).join("")}
+function hdr(title,back){return(back?'<button class="ic" data-a="back" aria-label="পিছনে">←</button>':'<span style="font-size:24px">🥬</span>')+"<b>"+title+"</b>"+(back?"":'<button class="ic" data-a="tab" data-v="cart" aria-label="কার্ট">🧺'+(qty()?'<span class="badge">'+qty()+"</span>":"")+"</button>")}
+function stepper(n,name,dis){return'<div class="q"><button class="rb" data-a="sub" data-n="'+name+'"'+(n>0?"":" disabled")+'>−</button><span>'+n+'</span><button class="rb p" data-a="add" data-n="'+name+'"'+(dis?" disabled":"")+">+</button></div>"}
+function home(){
+ return'<div class="hero"><h2>তাজা সবজি, আপনার দরজায়</h2><p>রাজশাহী শহরে সকাল ৮টা থেকে দুপুর ১২টার মধ্যে ডেলিভারি।</p><p style="font-size:12px">পরের দিনের অর্ডার আগের দিন রাত ১২টার আগে করুন।</p></div><h3>আজকের সবজি</h3><div class="grid">'+
+ VEG.map(function(v){return'<div class="vc"><div class="em">'+v[3]+"</div><b>"+v[0]+"</b><small>৳"+v[2]+" / "+v[1]+"</small>"+stepper(S.cart[v[0]]||0,v[0])+"</div>"}).join("")+
+ '</div><button class="btn o" data-a="tab" data-v="cart">🧺 আমার কার্ট দেখুন</button>';
+}
+function cart(){
+ var it=VEG.filter(function(v){return S.cart[v[0]]>0});
+ if(!it.length)return'<h3>আপনার বাজারের তালিকা</h3><div class="empty">এখনো কোনো সবজি নির্বাচন করেননি।</div>';
+ return'<h3>আপনার বাজারের তালিকা</h3>'+it.map(function(v){return'<div class="card li"><span class="em">'+v[3]+'</span><div><b>'+v[0]+"</b><small>৳"+v[2]+" × "+S.cart[v[0]]+" "+v[1]+"</small></div>"+stepper(S.cart[v[0]],v[0])+"</div>"}).join("")+
+ '<div class="card">'+line("সবজির মূল্য",sub())+line("ডেলিভারি চার্জ",FEE)+line("সর্বমোট",sub()+FEE,1)+'</div><button class="btn" data-a="checkout">অর্ডার করতে এগিয়ে যান</button>';
+}
+function info(t){return'<div class="info">🚚 <b>ডেলিভারি: সকাল ৮টা–১২টা</b><br>'+t+"</div>"}
+function checkout(){
+ return'<div class="card"><b>কাস্টমার:</b> '+esc(S.user.name)+"<br><b>মোবাইল:</b> "+esc(S.user.phone)+'</div><label for="addr">সম্পূর্ণ ঠিকানা, এলাকা ও বাসার বিবরণ</label><textarea id="addr" rows="3">'+esc(S.addr)+'</textarea><label for="pay">পেমেন্ট পদ্ধতি</label><select id="pay">'+payOpts()+"</select>"+info("আগের দিন রাত ১২টার মধ্যে অর্ডার | চার্জ ৳২০")+'<div class="card">'+line("সবজির মূল্য",sub())+line("ডেলিভারি চার্জ",FEE)+line("সর্বমোট",sub()+FEE,1)+'</div><button class="btn" data-a="send" id="go">অর্ডার পাঠান</button><p class="note">bKash, Nagad ও Rocket আপাতত পেমেন্ট পছন্দ হিসেবে সংরক্ষিত হয়। স্বয়ংক্রিয় টাকা লেনদেন চালু নেই।</p>';
+}
+function weekly(){
+ var d=DAYS[S.cur],on=S.days.indexOf(d)>-1;
+ return'<div class="info" style="background:var(--lt)">আপনার প্রয়োজন অনুযায়ী সপ্তাহের দিন ও প্রতিদিনের সবজি বেছে নিন। প্রতিটি ডেলিভারিতে ৳২০ চার্জ।</div><b>কোন কোন দিন ডেলিভারি চান?</b><div class="chips">'+
+ DAYS.map(function(x){return'<button class="chip'+(S.days.indexOf(x)>-1?" on":"")+'" data-a="wday" data-d="'+x+'">'+x+"</button>"}).join("")+'</div><b>প্রতিদিনের সবজি নির্বাচন</b><div class="chips">'+
+ DAYS.map(function(x,i){return'<button class="chip'+(i===S.cur?" cur":"")+'" data-a="wcur" data-i="'+i+'">'+x+"</button>"}).join("")+"</div>"+
+ (on?"":'<p class="note">'+d+' দিনটি নির্বাচন করলে এই দিনের বাজার যোগ করতে পারবেন।</p>')+
+ VEG.map(function(v){var n=(S.plan[d]||{})[v[0]]||0;return'<div class="card li"><span class="em">'+v[3]+"</span><div><b>"+v[0]+"</b><small>৳"+v[2]+"/"+v[1]+"</small></div>"+(on?stepper(n,v[0]).replace(/data-a="(sub|add)"/g,'data-a="w$1"'):"")+"</div>"}).join("")+
+ '<div class="card">'+line("সাপ্তাহিক সবজির মূল্য",wveg())+line("ডেলিভারি ("+S.days.length+" দিন × ৳২০)",S.days.length*FEE)+line("সাপ্তাহিক মোট",wveg()+S.days.length*FEE,1)+'</div><b>ডেলিভারি তথ্য</b><div class="note">নাম: '+esc(S.user.name)+" | মোবাইল: "+esc(S.user.phone)+'</div><label for="addr">সম্পূর্ণ ঠিকানা, এলাকা ও বাসার বিবরণ</label><textarea id="addr" rows="3">'+esc(S.addr)+'</textarea><label for="pay">পেমেন্ট পদ্ধতি</label><select id="pay">'+payOpts()+"</select>"+info("আগের দিন রাত ১২টার মধ্যে পরিবর্তন/বাতিলের অনুরোধ করুন।")+'<button class="btn" data-a="sendw" id="go">সাপ্তাহিক প্যাকেজ নিশ্চিত করুন</button>';
+}
+function orders(){
+ if(!S.orders.length)return'<div class="empty">আপনার কোনো অর্ডার নেই।</div>';
+ return"<h3>আমার অর্ডার</h3>"+S.orders.map(function(o){
+  var it=o.plan?Object.keys(o.plan).map(function(d){return"<b>"+d+"</b>: "+Object.keys(o.plan[d]).map(function(k){return esc(k)+" "+o.plan[d][k]}).join(", ")}).join("<br>"):(o.items||[]).map(function(i){return esc(i.name)+" × "+i.qty+" "+esc(i.unit)}).join("<br>");
+  return'<details class="card"><summary><span>'+esc(o.type)+" • ৳"+o.total+'</span><span class="pill">'+esc(o.status)+'</span></summary><p class="note">'+esc(o.id)+" | "+esc(o.payment)+"</p><p>"+it+"</p><p>📍 "+esc(o.address)+"</p>"+(o.days&&o.days.length?"<p>ডেলিভারির দিন: "+o.days.map(esc).join(", ")+"</p>":"")+line("সবজির মূল্য",o.subtotal)+line("ডেলিভারি চার্জ",o.fee)+line("সর্বমোট",o.total,1)+"</details>"}).join("")+'<p class="note">অর্ডারের বর্তমান অবস্থা জানতে WhatsApp-এ যোগাযোগ করুন।</p>';
+}
+function profile(){
+ var u=S.user;
+ return'<div style="text-align:center;font-size:56px">👤</div><h3 style="text-align:center;margin:4px 0">'+(u?esc(u.name):"কাস্টমার প্রোফাইল")+'</h3><p style="text-align:center;margin:0 0 12px">'+(u?esc(u.phone):"অর্ডার করতে লগইন করুন")+"</p>"+
+ (u?'<button class="btn o" data-a="logout">লগআউট</button>':'<button class="btn" data-a="login">লগইন / রেজিস্ট্রেশন</button>')+
+ '<div class="card">📍 <b>ডেলিভারি এলাকা</b><br>রাজশাহী শহর</div><div class="card">🕗 <b>ডেলিভারির সময়</b><br>সকাল ৮টা–দুপুর ১২টা</div><a class="btn w" href="https://wa.me/'+WA+'" target="_blank" rel="noopener">💬 কাস্টমার সাপোর্ট (WhatsApp)</a>'+
+ (S.install?'<button class="btn o" data-a="install">📲 অ্যাপ ইনস্টল করুন</button>':"");
+}
+function login(){
+ return'<div style="text-align:center;font-size:56px">👤</div><h3>অর্ডার করতে আপনার তথ্য দিন</h3><label for="ln">আপনার নাম</label><input id="ln" autocomplete="name" maxlength="80"><label for="lp">মোবাইল নম্বর</label><input id="lp" type="tel" inputmode="numeric" autocomplete="tel" maxlength="14" placeholder="01XXXXXXXXX"><button class="btn" data-a="dologin">চালিয়ে যান</button><p class="note">আপনার তথ্য এই ফোনে মনে রাখা হবে। OTP যাচাইকরণ এখনো চালু নেই।</p>';
+}
+var TITLES={home:"সবজি ঘর",cart:"কার্ট",orders:"অর্ডার",profile:"প্রোফাইল",login:"লগইন / রেজিস্ট্রেশন",checkout:"অর্ডার নিশ্চিত করুন",weekly:"নিজের সাপ্তাহিক প্যাকেজ"};
+var MAIN={home:home,cart:cart,orders:orders,profile:profile,login:login,checkout:checkout,weekly:weekly};
+function render(){
+ var sub_=["login","checkout","weekly"].indexOf(S.view)>-1;
+ $("hd").innerHTML=hdr(TITLES[S.view],sub_);
+ $("app").innerHTML=MAIN[S.view]();
+ var tabs=[["home","🏠","হোম"],["cart","🛒","কার্ট"],["orders","🧾","অর্ডার"],["profile","👤","প্রোফাইল"]];
+ $("bar").innerHTML=sub_?"":(S.view==="home"?'<button class="fab" data-a="wopen">📅 সাপ্তাহিক প্যাকেজ</button>':"")+"<nav>"+tabs.map(function(t){return'<button class="'+(S.view===t[0]?"on":"")+'" data-a="tab" data-v="'+t[0]+'"><span>'+t[1]+"</span>"+t[2]+"</button>"}).join("")+"</nav>";
+}
+function need(next){if(S.user){next();return}S.after=next;S.prev=S.view;S.view="login";render();scrollTo(0,0)}
+function go(v){S.view=v;render();scrollTo(0,0)}
+function bump(m,n,d){var x=(m[n]||0)+d;if(x<=0)delete m[n];else m[n]=x}
+function readForm(){if($("addr"))S.addr=$("addr").value;if($("pay"))S.pay=$("pay").value}
+async function post(o){
+ var r=await fetch(SB_URL+"/rest/v1/orders",{method:"POST",headers:{apikey:SB_KEY,Authorization:"Bearer "+SB_KEY,"Content-Type":"application/json",Prefer:"return=minimal"},body:JSON.stringify({order_code:o.id,order_type:o.type,customer_name:o.customer,phone:o.phone,address:o.address,payment_method:o.payment,subtotal:o.subtotal,delivery_fee:o.fee,total:o.total,status:o.status,items:o.items||[],delivery_days:o.days||[],weekly_plan:o.plan||{}})});
+ if(!r.ok)throw new Error(await r.text());
+}
+async function submit(o,after){
+ var b=$("go");if(b){b.disabled=true;b.textContent="পাঠানো হচ্ছে..."}
+ try{await post(o);S.orders.unshift(o);sv("sg_orders",S.orders);after();toast("অর্ডার পাঠানো হয়েছে। ধন্যবাদ!");go("orders")}
+ catch(e){if(b){b.disabled=false;b.textContent=o.plan?"সাপ্তাহিক প্যাকেজ নিশ্চিত করুন":"অর্ডার পাঠান"}toast("অর্ডার পাঠানো যায়নি। ইন্টারনেট/সার্ভার সেটিং পরীক্ষা করুন।")}
+}
+document.addEventListener("click",function(e){
+ var b=e.target.closest("[data-a]");if(!b)return;var a=b.dataset.a,n=b.dataset.n;
+ if(a==="tab"){S.view=b.dataset.v;render();scrollTo(0,0)}
+ else if(a==="back"){readForm();var pv=S.view==="checkout"?"cart":(S.view==="login"?(S.prev||"home"):"home");S.after=null;go(pv)}
+ else if(a==="add"){bump(S.cart,n,1);render()}
+ else if(a==="sub"){bump(S.cart,n,-1);render()}
+ else if(a==="checkout"){need(function(){go("checkout")})}
+ else if(a==="wopen"){need(function(){go("weekly")})}
+ else if(a==="wday"){var d=b.dataset.d,i=S.days.indexOf(d);readForm();if(i>-1)S.days.splice(i,1);else{S.days.push(d);S.plan[d]=S.plan[d]||{}}S.cur=DAYS.indexOf(d);render()}
+ else if(a==="wcur"){readForm();S.cur=Number(b.dataset.i);render()}
+ else if(a==="wadd"){readForm();S.plan[DAYS[S.cur]]=S.plan[DAYS[S.cur]]||{};bump(S.plan[DAYS[S.cur]],n,1);render()}
+ else if(a==="wsub"){readForm();bump(S.plan[DAYS[S.cur]]||{},n,-1);render()}
+ else if(a==="login"){need(function(){go("profile")})}
+ else if(a==="dologin"){
+  var nm=$("ln").value.trim(),ph=en($("lp").value).replace(/[\s-]/g,"");
+  if(!nm||!/^(\+?88)?01[3-9]\d{8}$/.test(ph)){toast("নাম ও সঠিক মোবাইল নম্বর দিন (01XXXXXXXXX)।");return}
+  S.user={name:nm,phone:ph};sv("sg_user",S.user);var f=S.after;S.after=null;if(f)f();else go("profile")}
+ else if(a==="logout"){S.user=null;try{localStorage.removeItem("sg_user")}catch(x){}render()}
+ else if(a==="send"){
+  readForm();if(!S.addr.trim()){toast("ডেলিভারি ঠিকানা লিখুন।");return}
+  var items=VEG.filter(function(v){return S.cart[v[0]]>0}).map(function(v){return{name:v[0],qty:S.cart[v[0]],unit:v[1],price:v[2],lineTotal:v[2]*S.cart[v[0]]}});
+  submit({id:"SG-"+Date.now(),type:"দৈনিক অর্ডার",customer:S.user.name,phone:S.user.phone,address:S.addr.trim(),payment:S.pay,subtotal:sub(),fee:FEE,total:sub()+FEE,status:"নতুন অর্ডার",items:items},function(){S.cart={}})}
+ else if(a==="sendw"){
+  readForm();if(!S.addr.trim()){toast("সম্পূর্ণ ডেলিভারি ঠিকানা লিখুন।");return}
+  if(!S.days.length||S.days.some(function(d){return dsub(d)===0})){toast("প্রতিটি নির্বাচিত দিনে অন্তত একটি সবজি যোগ করুন।");return}
+  var dl=DAYS.filter(function(d){return S.days.indexOf(d)>-1}),pl={};dl.forEach(function(d){pl[d]=S.plan[d]});
+  submit({id:"SG-"+Date.now(),type:"কাস্টম সাপ্তাহিক প্যাকেজ",customer:S.user.name,phone:S.user.phone,address:S.addr.trim(),payment:S.pay,subtotal:wveg(),fee:dl.length*FEE,total:wveg()+dl.length*FEE,status:"প্যাকেজের অনুরোধ",days:dl,plan:pl,items:[]},function(){S.days=[];S.plan={};S.cur=0})}
+ else if(a==="install"&&S.install){S.install.prompt();S.install=null;render()}
+});
+window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();S.install=e;if(S.view==="profile")render()});
+if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}
+render();
+</script>
+</body>
+</html>
