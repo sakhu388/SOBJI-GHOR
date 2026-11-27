@@ -1,0 +1,9 @@
+সবজি ঘর Supabase সংযোগের সেটিংস
+
+Project URL:
+https://kvgzvnzsztufiodkmhaf.supabase.co
+
+Publishable key:
+sb_publishable_NY8K0Fh_LczN73d9KDZjpw_tFz6JEqM
+
+নোট: Publishable key অ্যাপ/ব্রাউজারে ব্যবহার করার জন্য তৈরি। Secret key বা service_role key কখনো এখানে বসাবেন না।
